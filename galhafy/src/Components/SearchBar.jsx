@@ -11,18 +11,18 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="sticky">
+    <div id="search-bar">
       <input
         type="text"
         placeholder="Search gif"
-        className="bg-white w-full mt-10 p-3 rounded  border-2   border-gray-600 text-black outline-0"
+        className="w-full p-3 mt-10 text-black bg-white border-2 border-gray-600 rounded-xl outline-0"
         onChange={(e) => setSearch(e.target.value)}
       />
 
       <motion.button
         whileTap={{ scale: 0.9 }}
         onClick={() => handleClick()}
-        className="float-right  text-black  mt-11  absolute -ml-28  rounded   text-1xl font-extrabold bg-gradient-to-br from-pink-400 to-red-600"
+        className="absolute float-right p-1 mt-12 -ml-24 text-xl text-white rounded bg-gradient-to-br from-pink-400 to-red-600"
       >
         Search
       </motion.button>

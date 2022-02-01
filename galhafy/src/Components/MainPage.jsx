@@ -1,6 +1,6 @@
 import React from "react";
 
-import Header from "../Components/Header";
+import { Header } from "../Components/Header";
 import GifsSection from "../Components/GifsSection";
 
 const MainPage = () => {
@@ -10,6 +10,9 @@ const MainPage = () => {
       <GifsSection topic={"Trending"} limit={9} searchStyle={"trending"} />
       <GifsSection topic={"Emotional"} limit={9} searchStyle={"search"} />
       <GifsSection topic={"Sports"} limit={9} searchStyle={"search"} />
+      <GifsSection topic={"High five"} limit={9} searchStyle={"search"} />
+      <GifsSection topic={"Scared"} limit={9} searchStyle={"search"} />
+      <GifsSection topic={"Bored"} limit={9} searchStyle={"search"} />
     </>
   );
 };

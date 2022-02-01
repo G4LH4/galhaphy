@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import { Title } from "./Header";
-import GifsSection from "../Components/GifsSection";
+import GifsSection from "./GifsSection";
 
-const SearchPage = ({ searchTopic }) => {
+const SpecificGifsPage = ({ searchTopic }) => {
   const { params } = searchTopic;
 
   return (
@@ -14,4 +14,4 @@ const SearchPage = ({ searchTopic }) => {
   );
 };
 
-export default SearchPage;
+export default SpecificGifsPage;
