@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import { Title } from "./Header";
+import { Header } from "./Header";
 import GifsSection from "../Components/GifsSection";
 
 const SearchPage = ({ searchTopic }) => {
@@ -8,7 +8,7 @@ const SearchPage = ({ searchTopic }) => {
 
   return (
     <div>
-      <Title />
+      <Header />
       <GifsSection topic={params.search} limit={9} searchStyle={"search"} />
     </div>
   );

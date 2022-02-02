@@ -16,7 +16,9 @@ const SearchBar = () => {
         type="text"
         placeholder="Search gif"
         className="w-full p-3 mt-10 text-black bg-white border-2 border-gray-600 rounded-xl outline-0"
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => {
+          setSearch(e.target.value);
+        }}
       />
 
       <motion.button

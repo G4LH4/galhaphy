@@ -3,7 +3,7 @@ import fetchApi from "../Services/Index";
 import { motion } from "framer-motion";
 import LoadingWheel from "../img/Loading.svg";
 
-const CreateGifs = ({ topic, limit, searchStyle }) => {
+const useGifs = ({ topic, limit, searchStyle }) => {
   const [gifs, setGifs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,7 +22,17 @@ const CreateGifs = ({ topic, limit, searchStyle }) => {
     };
 
     fetchData();
-  }, [setGifs]);
+  }, [topic, limit, searchStyle]);
+
+  return [gifs, isLoading];
+};
+
+const CreateGifs = ({ topic, limit, searchStyle }) => {
+  const [gifs, isLoading] = useGifs({
+    topic,
+    limit,
+    searchStyle,
+  });
 
   return (
     <div id={`${topic}-gifs`} className="mx-auto mt-20 text-left ">
@@ -30,7 +40,7 @@ const CreateGifs = ({ topic, limit, searchStyle }) => {
         {`${topic} gifs`}
       </h3>
 
-      <div id="gifs" className="p-10 mx-auto mt-10 border-2 border-gray-600 ">
+      <div id="gifs" className="p-10 mx-auto mt-10 border-2 border-pink-500">
         {isLoading ? (
           <img src={LoadingWheel} className="mx-auto" />
         ) : (
@@ -60,12 +70,23 @@ const useCopied = () => {
   return [isCopied, setIsCopied];
 };
 
+const ClickedSection = () => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="w-1/6 mx-auto mt-12 text-center bg-green-500 rounded-xl"
+    >
+      <h3 className="text-black">Copied</h3>
+    </motion.div>
+  );
+};
+
 const GifMotion = ({ gif }) => {
   const [isCopied, setIsCopied] = useCopied();
 
   const handleClick = async () => {
-    console.log("Is copied");
-
     await navigator.clipboard.writeText(gif.gifUrl);
 
     setIsCopied(true);
@@ -73,19 +94,22 @@ const GifMotion = ({ gif }) => {
 
   return (
     <>
-      {isCopied && <p className="text-red-500">test</p>}
+      {isCopied && <ClickedSection />}
 
       <motion.div
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="mx-auto mt-10 ml-10 "
+        className="mx-auto ml-10 "
       >
         <img
           onClick={handleClick}
           src={gif.img}
-          className="w-10/12 mx-auto mt-20 rounded cursor-pointer"
+          className="w-10/12 mx-auto mt-20 border-2 border-pink-500 rounded cursor-pointer"
         />
       </motion.div>
+      <div className="mt-10 text-center ">
+        <h3>{gif.title}</h3>
+      </div>
     </>
   );
 };

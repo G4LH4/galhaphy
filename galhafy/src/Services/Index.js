@@ -8,11 +8,11 @@ const fetchApi = async ({ limit, topic, searchStyle }) => {
   const dataJson = await fetchUrl.json();
 
   if (dataJson.meta.status === 200) {
-    return dataJson.data.map((data) => {
+    return dataJson?.data.map((data) => {
       return {
-        title: data.title,
-        img: data.images.downsized_medium.url,
-        gifUrl: data.url,
+        title: data?.title,
+        img: data?.images.downsized_medium.url,
+        gifUrl: data?.url,
       };
     });
   }
