@@ -1,40 +1,60 @@
 import React, { useEffect, useState } from "react";
-import fetchApi from "../Services/Index";
+import { fetchApi } from "../Services/Index";
 import { motion } from "framer-motion";
 import LoadingWheel from "../img/Loading.svg";
+import ErrorStatus from "./ErrorStatus";
+import InexistentGif from "../img/204.gif";
 
 const useGifs = ({ topic, limit, searchStyle }) => {
   const [gifs, setGifs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [isError, setIsError] = useState({
+    wasAnError: false,
+    errorMSG: "",
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
 
-      const getGifs = await fetchApi({
+      const [gifsData, error] = await fetchApi({
         topic,
         limit,
         searchStyle,
       });
 
+      if (error) {
+        setIsError({
+          wasAnError: true,
+          errorMSG: error ?? { message: "No gifs found" },
+        });
+      } else {
+        setGifs(gifsData);
+      }
       setIsLoading(false);
-      setGifs(getGifs);
     };
 
     fetchData();
   }, [topic, limit, searchStyle]);
 
-  return [gifs, isLoading];
+  return {
+    gifs,
+    isLoading,
+    isError,
+  };
 };
 
 const CreateGifs = ({ topic, limit, searchStyle }) => {
-  const [gifs, isLoading] = useGifs({
+  const { gifs, isLoading, isError } = useGifs({
     topic,
     limit,
     searchStyle,
   });
 
-  return (
+  return isError.wasAnError ? (
+    <ErrorStatus title={isError.errorMSG.message} src={InexistentGif} />
+  ) : (
     <div id={`${topic}-gifs`} className="mx-auto mt-20 text-left ">
       <h3 className="text-2xl font-extrabold text-transparent 0 bg-clip-text bg-gradient-to-br from-pink-400 to-red-600">
         {`${topic} gifs`}
@@ -85,11 +105,14 @@ const ClickedSection = () => {
 
 const GifMotion = ({ gif }) => {
   const [isCopied, setIsCopied] = useCopied();
+  const miStorage = window.localStorage;
 
-  const handleClick = async () => {
-    await navigator.clipboard.writeText(gif.gifUrl);
+  const handleClick = () => {
+    navigator.clipboard.writeText(gif.gifUrl);
 
     setIsCopied(true);
+
+    miStorage.setItem("lastSearch", gif.gifUrl);
   };
 
   return (
@@ -99,7 +122,7 @@ const GifMotion = ({ gif }) => {
       <motion.div
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="mx-auto ml-10 "
+        className="mx-auto "
       >
         <img
           onClick={handleClick}

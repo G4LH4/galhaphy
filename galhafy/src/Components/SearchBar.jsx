@@ -1,12 +1,38 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "wouter";
+import MotionBtn from "./MotionBtn";
 
 const SearchBar = () => {
   const [search, setSearch] = useState();
+
   const [location, setLocation] = useLocation();
 
+  const [isError, setIsError] = useState({
+    error: false,
+    errorMSG: "",
+  });
+
   const handleClick = () => {
+    if (search === undefined) {
+      console.log("Invalid search length");
+
+      // throw new Error("Invalid search length");
+
+      setIsError({
+        error: true,
+        errorMSG: "Invalid search length",
+      });
+
+      setTimeout(() => {
+        setIsError({
+          error: false,
+          errorMSG: "",
+        });
+      }, 3000);
+    }
+
+    console.log(search);
+
     setLocation(`/search/${search}`);
   };
 
@@ -20,14 +46,16 @@ const SearchBar = () => {
           setSearch(e.target.value);
         }}
       />
+      <MotionBtn title={"Search"} fn={handleClick} />
 
-      <motion.button
-        whileTap={{ scale: 0.9 }}
-        onClick={() => handleClick()}
-        className="absolute float-right p-1 mt-12 -ml-24 text-xl text-white rounded bg-gradient-to-br from-pink-400 to-red-600"
-      >
-        Search
-      </motion.button>
+      {/* {isError.error && (
+        <div
+          id="errorMSG"
+          className="p-1 mx-auto mt-4 bg-red-500 w-fit rounded-xl"
+        >
+          <p>{isError.errorMSG}</p>
+        </div>
+      )} */}
     </div>
   );
 };
